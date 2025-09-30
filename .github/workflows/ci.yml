@@ -1,0 +1,53 @@
+name: Check Theorem
+
+on: [push, pull_request]
+
+jobs:
+  test-vieta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find secret in git history
+        id: find_secret
+        run: |
+          echo "🔍 Ищем секретную информацию в истории коммитов..."
+          SECRET_INFO=$(git log --all --grep="4T_S_P" --oneline -1 | cut -d' ' -f2-)
+          if [ -n "$SECRET_INFO" ]; then
+            echo "✅ Найдено: $SECRET_INFO"
+            echo "secret_info=$SECRET_INFO" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Секретная информация не найдена"
+            echo "Проверьте историю коммитов: git log --oneline"
+            exit 1
+          fi
+
+      - name: Extract pastebin ID
+        id: extract_id
+        run: |
+          SECRET_INFO="${{ steps.find_secret.outputs.secret_info }}"
+          PASTEBIN_ID=$(echo "$SECRET_INFO" | grep -o '4T_S_P_[A-Za-z0-9]*' | cut -d'_' -f2)
+          if [ -n "$PASTEBIN_ID" ]; then
+            echo "✅ Pastebin ID: $PASTEBIN_ID"
+            echo "pastebin_id=$PASTEBIN_ID" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Не удалось извлечь Pastebin ID"
+            exit 1
+          fi
+
+      - name: Test theorem implementation
+        run: |
+          echo "🧮 Проверяем реализацию теоремы ..."
+          python test_vieta.py
+
+      - name: Reveal final message
+        if: success()
+        run: |
+          echo "🎉 Поздравляем! Вы исправили теорему!"
+          echo "📝 Разгадайте загадку по ссылке:"
+          echo ""
+          echo "🔗 Ссылка на Pastebin с дополнительной информацией:"
+          echo "https://pastebin.com/raw/${{ steps.extract_id.outputs.pastebin_id }}"
