@@ -47,7 +47,7 @@ jobs:
           fi
           echo "✅ Все тесты пройдены"
 
-      - name: Reveal final message
+      - name: Final message
         if: success()
         run: |
           echo "🎉 Поздравляем! Вы исправили теорему!"
