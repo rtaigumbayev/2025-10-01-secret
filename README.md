@@ -3,7 +3,7 @@
 
 ## Что нужно сделать
 1. **Сделайте Fork** этого репозитория https://github.com/rtaigumbayev/2025-10-01-secret/fork
-2. **Включите Actions** в своем новом репозитории https://github.com/[ваш_github_account]/2025-09-24-secret/actions
+2. **Включите Actions** в своем новом репозитории https://github.com/[ваш_github_account]/2025-10-01-secret/actions
 3. **Определите какая теорема реализована в коде и исправьте ошибки**
 4. **Сделайте commit а затем push** своих изменений
 5. **Проверьте логи в консоле** в Actions - при успехе получите ответ
