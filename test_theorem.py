@@ -21,3 +21,4 @@ def test_theorem():
 if __name__ == "__main__":
     all_passed = test_theorem()
     print("Все тесты пройдены:", all_passed)
+    exit(0 if all_passed else 1)

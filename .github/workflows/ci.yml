@@ -41,9 +41,14 @@ jobs:
           fi
 
       - name: Test theorem implementation
+        id: test_theorem
         run: |
           echo "🧮 Проверяем реализацию теоремы ..."
-          python test_theorem.py
+          if ! python test_theorem.py; then
+            echo "❌ Тесты не пройдены"
+            exit 1
+          fi
+          echo "✅ Все тесты пройдены"
 
       - name: Reveal final message
         if: success()
