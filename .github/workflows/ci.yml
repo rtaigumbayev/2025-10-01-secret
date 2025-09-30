@@ -29,12 +29,14 @@ jobs:
         id: extract_id
         run: |
           SECRET_INFO="${{ steps.find_secret.outputs.secret_info }}"
-          PASTEBIN_ID=$(echo "$SECRET_INFO" | grep -o '4T_S_P_[A-Za-z0-9]*' | cut -d'_' -f2)
+          # Ищем полный паттерн 4T_S_P_xxxxxxx и извлекаем только ID часть
+          PASTEBIN_ID=$(echo "$SECRET_INFO" | grep -o '4T_S_P_[A-Za-z0-9]*' | sed 's/4T_S_P_//')
           if [ -n "$PASTEBIN_ID" ]; then
             echo "✅ Pastebin ID: $PASTEBIN_ID"
             echo "pastebin_id=$PASTEBIN_ID" >> $GITHUB_OUTPUT
           else
             echo "❌ Не удалось извлечь Pastebin ID"
+            echo "Полученная секретная информация: $SECRET_INFO"
             exit 1
           fi
 
