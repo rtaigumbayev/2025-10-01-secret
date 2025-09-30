@@ -3,7 +3,7 @@ name: Check Theorem
 on: [push, pull_request]
 
 jobs:
-  test-vieta:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code with full history
@@ -41,7 +41,7 @@ jobs:
       - name: Test theorem implementation
         run: |
           echo "🧮 Проверяем реализацию теоремы ..."
-          python test_vieta.py
+          python test_theorem.py
 
       - name: Reveal final message
         if: success()
